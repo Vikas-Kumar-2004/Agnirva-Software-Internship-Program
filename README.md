@@ -1,60 +1,68 @@
-# Agnirva Software Internship Program
-Master software development in 8 weeks, from fundamentals to AI/ML, blockchain, NASA APIs, and space applications. Gain hands-on experience with daily activities, sample code, and expert guidance, building a capstone project and a strong GitHub portfolio.
+🌠 Agnirva Software Internship Program – Fast Track
 
-🗓️ Week 8, Day 5: Capstone Project Demo Day
-📘 Capstone Project – Final Day Report
-Name: Vikas Kumar
-College: ITS Engineering College
-Roll No: 2202220100190
-Course: Space Applications and Web Development
-Day: Week 8, Day 5 – Capstone Project Demo Day
-Project Title: Tour and Travel Management System
-________________________________________
-🎥 Demo Presentation Overview
-🔹 Introduction
-“Hi, I’m Vikas Kumar and today I’m presenting my Capstone Project, Wanderlust.  I made a travel website where users can sign up, log in, and post places they want to list for travel. Other users can view, review, or filter listings. Users can also upload photos of the places. It's a full-stack website using Node.js, Express, MongoDB, and EJS.”
-🔹 Features Overview
+The Agnirva Software Internship Program – Fast Track was an intensive 8-week journey designed to transform aspiring developers from beginners to industry-ready professionals. The program covered a wide spectrum of modern software development concepts, tools, and real-world applications. It emphasized daily hands-on coding, mini-projects, API integration, and culminated in a fully deployed Capstone Project.
 
-🔹 Demo Walkthrough
-•	Showed complete workflow: from user landing on the homepage to final interaction.
-•	Demonstrated key UI/UX flows and dynamic responses.
-•	(If applicable) Demonstrated back-end functionality using Postman or logs.
-🔹 Technologies Used
-•	Frontend: HTML, CSS, JavaScript
-•	Backend: Node.js, Express
-•	Database: MongoDB 
-•	Other Tools: Git, GitHub,React.
-🔹 Challenges & Learnings
-•	Faced challenges like [e.g., API integration delays, UI responsiveness, or form validation issues].
-•	Overcame them through debugging, research, and peer support.
-•	Biggest takeaway: improved confidence in building and deploying full-stack applications.
-🔹 Conclusion
-"This project has helped me apply all I’ve learned over the past 8 weeks. Thank you for the opportunity!"
-________________________________________
-✅ Final Deliverables
-1. 🌐 Deployed Application
-•	Live Project URL:https://tour-and-travel-management-system.onrender.com/
-•	Status: ✔️ Verified and working
-2. 📁 GitHub Repository
-•	Link: https://github.com/Vikas-Kumar-2004/Tour-and-Travel-Website
-•	Includes:
-o	✔️ All source code files
-o	✔️ Complete and updated README.md
-	Project description
-	Features
-	Technologies used
-	Setup instructions
-	Live link
-	(Optional) Screenshots
-o	✔️ Clean folder structure
-3. 📝 Progress Log & Documentation
-•	Logged daily updates from Day 1 to Day 5
-•	Summarized key achievements and challenges
-•	Final reflection included
-4. 📽️ Recorded Demo Video
-•	Tool Used: [OBS / Loom / Zoom]
-•	Length: ⏱️ Under 5 minutes
-•	Format: MP4
-•	Uploaded on GitHub or submitted as instructed
+📅 Duration
+8 Weeks
+Mode: Online, Self-Paced with Daily Activities
+Final Outcome: Capstone Project + GitHub Repository + Certificate of Completion
 
+🚀 Topics Covered Week-by-Week
+Week	Focus Area	Topics & Activities
+Week 1	Foundations	HTML, CSS, GitHub Basics, Portfolio Setup
+Week 2	JavaScript	Variables, Functions, DOM, Events, Arrays, Loops
+Week 3	Web Projects	To-Do List App, Notes App using HTML/CSS/JS
+Week 4	Backend	Node.js, Express.js, APIs, MongoDB
+Week 5	APIs & Databases	NASA APIs, MongoDB Atlas, Fetch API
+Week 6	Space Applications	Building space-themed apps using external APIs
+Week 7	AI/ML & Blockchain	Basics of Machine Learning and Blockchain Integration
+Week 8	Capstone	Final Project Build, Testing, Deployment, Presentation
+
+💻 Capstone Project
+The final week focused on building a live full-stack project, implementing all major learnings from previous weeks. It included:
+
+Front-end: HTML, CSS, Bootstrap, JavaScript
+
+Back-end: Node.js, Express.js, MongoDB
+
+Features: CRUD functionality, API integration, form validation, responsive UI
+
+Deployment: GitHub Pages, Netlify, Heroku, or Render
+
+🌐 Live Link: https://tour-and-travel-management-system.onrender.com/
+📂 GitHub Repo: https://github.com/Vikas-Kumar-2004/Tour-and-Travel-Website
+
+📚 Key Skills Learned
+Full-Stack Web Development (HTML, CSS, JS, Node.js, Express, MongoDB)
+
+API Integration (NASA APIs, ISRO APIs)
+
+Front-End Frameworks (Bootstrap)
+
+Git & GitHub for Version Control
+
+UI/UX Design Best Practices
+
+Testing, Deployment & Debugging
+
+Basics of AI/ML & Blockchain
+
+Real-time collaboration and code reviews
+
+📌 Highlights
+Completed daily coding activities and mini projects.
+
+Built and deployed a real-world web application.
+
+Practiced manual testing, performance optimization, and responsive design.
+
+Documented work and maintained a professional GitHub repository.
+
+Participated in the Agnirva Premiere League: a showcase of projects to industry professionals.
+
+🏆 Certificate of Completion
+
+
+✨ Acknowledgments
+Special thanks to the Agnirva team for the well-structured program, clear guidance, real-world use cases, and mentorship that helped turn theory into practice.
 
