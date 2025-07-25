@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /> <!-- Specifies the character encoding for the document as UTF-8 (Commented by Agnirva.com) -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Makes the page responsive on mobile devices by setting the viewport to device width (Commented by Agnirva.com) -->
+<title>Simple To-Do List</title> <!-- Sets the title of the web page that appears in the browser tab (Commented by Agnirva.com) -->    
+<style>
+    body {
+        font-family: Arial, sans-serif;  /* Sets the font to Arial, with sans-serif as a fallback (Commented by Agnirva.com) */
+        margin: 20px;  /* Adds 20px of space around the body content (Commented by Agnirva.com) */
+        background: #f9f9f9;  /* Sets a light grayish background color (Commented by Agnirva.com) */
+    }
+    h1 {
+        text-align: center; /* Aligns the text to the center of the container (Commented by Agnirva.com) */
+    }
+    form { 
+        background: #fff; /* Set background color to white (Commented by Agnirva.com) */
+        padding: 20px; /* Add padding inside the form for spacing (Commented by Agnirva.com) */
+        margin-bottom: 20px; /* Add space below the form (Commented by Agnirva.com) */
+        border-radius: 8px; /* Round the corners of the form (Commented by Agnirva.com) */
+        box-shadow: 0 0 5px rgba(0,0,0,0.1); /* Apply subtle shadow around the form (Commented by Agnirva.com) */
+    }
+    form input, form select { 
+        margin-right: 10px; /* Adds right margin to inputs and selects for spacing (Commented by Agnirva.com) */
+        margin-bottom: 10px; /* Adds bottom margin to inputs and selects for spacing (Commented by Agnirva.com) */
+    } 
+    table { 
+        width: 100%; /* Makes table width 100% of its parent container (Commented by Agnirva.com) */
+        border-collapse: collapse; /* Ensures borders between table cells collapse into a single border (Commented by Agnirva.com) */
+        background: #fff; /* Sets background color of the table to white (Commented by Agnirva.com) */
+        border-radius: 8px; /* Rounds the corners of the table with an 8px radius (Commented by Agnirva.com) */
+        overflow: hidden; /* Ensures content does not overflow the table's boundaries (Commented by Agnirva.com) */
+        box-shadow: 0 0 5px rgba(0,0,0,0.1); /* Applies a subtle shadow around the table (Commented by Agnirva.com) */
+    }
+    th, td {
+        padding: 12px; /* Adds consistent spacing inside table cells for better readability (Commented by Agnirva.com) */
+        text-align: left; /* Aligns text to the left for a clean, structured appearance (Commented by Agnirva.com) */
+        border-bottom: 1px solid #ccc; /* Adds a light border under each row for visual separation (Commented by Agnirva.com) */
+    }
+    th {
+        background: #eee; /* Sets a light gray background for table headers for emphasis (Commented by Agnirva.com) */
+        font-weight: bold; /* Makes header text bold for better distinction (Commented by Agnirva.com) */
+    }
+    button {
+        padding: 5px 10px; /* Adds padding for clickable area and better UI experience (Commented by Agnirva.com) */
+        margin: 0 5px; /* Provides space between buttons for a clean layout (Commented by Agnirva.com) */
+        border: none; /* Removes default button border for a modern look (Commented by Agnirva.com) */
+        border-radius: 4px; /* Rounds the button corners for a softer design (Commented by Agnirva.com) */
+        cursor: pointer; /* Changes cursor to pointer on hover to indicate action (Commented by Agnirva.com) */
+    }
+    .edit-btn {
+        background: #f0ad4e; /* Sets orange color to indicate editing action (Commented by Agnirva.com) */
+        color: #fff; /* Ensures text is white for readability on the button (Commented by Agnirva.com) */
+    }
+    .delete-btn {
+        background: #d9534f; /* Sets red color to signify a delete action (Commented by Agnirva.com) */
+        color: #fff; /* Ensures text is white for contrast and clarity (Commented by Agnirva.com) */
+    }
+    .save-btn {
+        background: #5cb85c; /* Sets green color to represent save or add actions (Commented by Agnirva.com) */
+        color: #fff; /* Makes button text white for visibility on green background (Commented by Agnirva.com) */
+    }
+</style>
+</head>
+<body>
+    <h1>My To-Do List</h1> <!-- Main heading for the to-do list application (Commented by Agnirva.com) -->
+    <form id="Agnirva_taskForm"> <!-- Form for adding new tasks (Commented by Agnirva.com) -->
+        <input type="text" id="Agnirva_taskTitle" placeholder="Task Title" required /> <!-- Input for task title with placeholder text (Commented by Agnirva.com) -->
+        <input type="text" id="Agnirva_taskCategory" placeholder="Category" required /> <!-- Input for task category with placeholder text (Commented by Agnirva.com) -->
+        <select id="Agnirva_taskPriority" required> <!-- Dropdown to select task priority (Commented by Agnirva.com) -->
+            <option value="">Priority</option> <!-- Default option prompting user to select priority (Commented by Agnirva.com) -->
+            <option value="High">High</option> <!-- Option for High priority (Commented by Agnirva.com) -->
+            <option value="Medium">Medium</option> <!-- Option for Medium priority (Commented by Agnirva.com) -->
+            <option value="Low">Low</option> <!-- Option for Low priority (Commented by Agnirva.com) -->
+        </select>
+        <input type="date" id="Agnirva_taskDeadline" required /> <!-- Input for selecting task deadline date (Commented by Agnirva.com) -->
+        <button type="submit" class="save-btn">Add Task</button> <!-- Submit button to add the task (Commented by Agnirva.com) -->
+    </form>
+    
+    <table id="Agnirva_taskTable"> <!-- Table to display the list of tasks (Commented by Agnirva.com) -->
+        <thead>
+            <tr>
+                <th>Title</th> <!-- Table column for task titles (Commented by Agnirva.com) -->
+                <th>Category</th> <!-- Table column for task categories (Commented by Agnirva.com) -->
+                <th>Priority</th> <!-- Table column for task priorities (Commented by Agnirva.com) -->
+                <th>Deadline</th> <!-- Table column for task deadlines (Commented by Agnirva.com) -->
+                <th>Actions</th> <!-- Table column for action buttons like edit or delete (Commented by Agnirva.com) -->
+            </tr>
+        </thead>
+        <tbody id="Agnirva_taskBody"></tbody> <!-- Placeholder for dynamic task rows to be added (Commented by Agnirva.com) -->
+    </table>
+    
+    <script>
+        let Agnirva_tasks = JSON.parse(localStorage.getItem('Agnirva_tasks')) || []; // Load tasks from localStorage or initialize an empty array if none exist (Commented by Agnirva.com)
+        let Agnirva_editIndex = null; // Variable to store the index of the task being edited (Commented by Agnirva.com)
+    
+        const Agnirva_taskForm = document.getElementById('Agnirva_taskForm'); // Get the task form element from the DOM (Commented by Agnirva.com)
+        const Agnirva_taskTitle = document.getElementById('Agnirva_taskTitle'); // Get the task title input element (Commented by Agnirva.com)
+        const Agnirva_taskCategory = document.getElementById('Agnirva_taskCategory'); // Get the task category input element (Commented by Agnirva.com)
+        const Agnirva_taskPriority = document.getElementById('Agnirva_taskPriority'); // Get the task priority input element (Commented by Agnirva.com)
+        const Agnirva_taskDeadline = document.getElementById('Agnirva_taskDeadline'); // Get the task deadline input element (Commented by Agnirva.com)
+        const Agnirva_taskBody = document.getElementById('Agnirva_taskBody'); // Get the table body element where tasks will be displayed (Commented by Agnirva.com)
+    
+        // Render tasks to the table
+        function Agnirva_renderTasks() {
+            Agnirva_taskBody.innerHTML = ''; // Clear the existing content in the table body (Commented by Agnirva.com)
+            Agnirva_tasks.forEach((Agnirva_task, Agnirva_index) => { // Loop through each task in the tasks array (Commented by Agnirva.com)
+                const Agnirva_row = document.createElement('tr'); // Create a new table row for each task (Commented by Agnirva.com)
+    
+                const Agnirva_titleCell = document.createElement('td'); // Create a table cell for the task title (Commented by Agnirva.com)
+                Agnirva_titleCell.textContent = Agnirva_task.title; // Set the cell content to the task's title (Commented by Agnirva.com)
+                Agnirva_row.appendChild(Agnirva_titleCell); // Append the title cell to the row (Commented by Agnirva.com)
+    
+                const Agnirva_categoryCell = document.createElement('td'); // Create a table cell for the task category (Commented by Agnirva.com)
+                Agnirva_categoryCell.textContent = Agnirva_task.category; // Set the cell content to the task's category (Commented by Agnirva.com)
+                Agnirva_row.appendChild(Agnirva_categoryCell); // Append the category cell to the row (Commented by Agnirva.com)
+    
+                const Agnirva_priorityCell = document.createElement('td'); // Create a table cell for the task priority (Commented by Agnirva.com)
+                Agnirva_priorityCell.textContent = Agnirva_task.priority; // Set the cell content to the task's priority (Commented by Agnirva.com)
+                Agnirva_row.appendChild(Agnirva_priorityCell); // Append the priority cell to the row (Commented by Agnirva.com)
+    
+                const Agnirva_deadlineCell = document.createElement('td'); // Create a table cell for the task deadline (Commented by Agnirva.com)
+                Agnirva_deadlineCell.textContent = Agnirva_task.deadline; // Set the cell content to the task's deadline (Commented by Agnirva.com)
+                Agnirva_row.appendChild(Agnirva_deadlineCell); // Append the deadline cell to the row (Commented by Agnirva.com)
+    
+                const Agnirva_actionsCell = document.createElement('td'); // Create a table cell for the action buttons (Commented by Agnirva.com)
+                const Agnirva_editBtn = document.createElement('button'); // Create an "Edit" button (Commented by Agnirva.com)
+                Agnirva_editBtn.className = 'edit-btn'; // Add a class to the edit button for styling (Commented by Agnirva.com)
+                Agnirva_editBtn.textContent = 'Edit'; // Set the button text to "Edit" (Commented by Agnirva.com)
+                Agnirva_editBtn.onclick = () => Agnirva_editTask(Agnirva_index); // Set the click event to trigger task editing (Commented by Agnirva.com)
+    
+                const Agnirva_deleteBtn = document.createElement('button'); // Create a "Delete" button (Commented by Agnirva.com)
+                Agnirva_deleteBtn.className = 'delete-btn'; // Add a class to the delete button for styling (Commented by Agnirva.com)
+                Agnirva_deleteBtn.textContent = 'Delete'; // Set the button text to "Delete" (Commented by Agnirva.com)
+                Agnirva_deleteBtn.onclick = () => Agnirva_deleteTask(Agnirva_index); // Set the click event to trigger task deletion (Commented by Agnirva.com)
+    
+                Agnirva_actionsCell.appendChild(Agnirva_editBtn); // Append the edit button to the actions cell (Commented by Agnirva.com)
+                Agnirva_actionsCell.appendChild(Agnirva_deleteBtn); // Append the delete button to the actions cell (Commented by Agnirva.com)
+                Agnirva_row.appendChild(Agnirva_actionsCell); // Append the actions cell to the row (Commented by Agnirva.com)
+    
+                Agnirva_taskBody.appendChild(Agnirva_row); // Append the row to the table body (Commented by Agnirva.com)
+            });
+        }
+    
+        // Add or update task (handles task creation or editing) (Commented by Agnirva.com)
+        Agnirva_taskForm.addEventListener('submit', (Agnirva_e) => {
+            Agnirva_e.preventDefault(); // Prevents the default form submission behavior (Commented by Agnirva.com)
+            const Agnirva_title = Agnirva_taskTitle.value.trim(); // Get and trim the task title input value (Commented by Agnirva.com)
+            const Agnirva_category = Agnirva_taskCategory.value.trim(); // Get and trim the task category input value (Commented by Agnirva.com)
+            const Agnirva_priority = Agnirva_taskPriority.value; // Get the selected task priority (Commented by Agnirva.com)
+            const Agnirva_deadline = Agnirva_taskDeadline.value; // Get the selected task deadline (Commented by Agnirva.com)
+
+            if (!Agnirva_title || !Agnirva_category || !Agnirva_priority || !Agnirva_deadline) return; // Exit if any field is empty (Commented by Agnirva.com)
+
+            const Agnirva_newTask = { title: Agnirva_title, category: Agnirva_category, priority: Agnirva_priority, deadline: Agnirva_deadline }; // Create a new task object (Commented by Agnirva.com)
+
+            if (Agnirva_editIndex === null) {
+                // Add new task (if no task is currently being edited) (Commented by Agnirva.com)
+                Agnirva_tasks.push(Agnirva_newTask); // Add the new task to the tasks array (Commented by Agnirva.com)
+            } else {
+                // Update existing task (if editing a task) (Commented by Agnirva.com)
+                Agnirva_tasks[Agnirva_editIndex] = Agnirva_newTask; // Replace the task at the edit index with the new data (Commented by Agnirva.com)
+                Agnirva_editIndex = null; // Reset the edit index after updating (Commented by Agnirva.com)
+            }
+
+            Agnirva_saveTasks(); // Save tasks to localStorage (Commented by Agnirva.com)
+            Agnirva_renderTasks(); // Re-render the tasks list (Commented by Agnirva.com)
+            Agnirva_taskForm.reset(); // Reset the form fields (Commented by Agnirva.com)
+        });
+
+        function Agnirva_editTask(Agnirva_index) {
+            Agnirva_editIndex = Agnirva_index; // Set the index of the task to be edited (Commented by Agnirva.com)
+            const Agnirva_task = Agnirva_tasks[Agnirva_index]; // Retrieve the task data from the tasks array (Commented by Agnirva.com)
+            Agnirva_taskTitle.value = Agnirva_task.title; // Populate the form with the task title (Commented by Agnirva.com)
+            Agnirva_taskCategory.value = Agnirva_task.category; // Populate the form with the task category (Commented by Agnirva.com)
+            Agnirva_taskPriority.value = Agnirva_task.priority; // Populate the form with the task priority (Commented by Agnirva.com)
+            Agnirva_taskDeadline.value = Agnirva_task.deadline; // Populate the form with the task deadline (Commented by Agnirva.com)
+        }
+
+        function Agnirva_deleteTask(Agnirva_index) {
+            Agnirva_tasks.splice(Agnirva_index, 1); // Remove the task at the specified index from the tasks array (Commented by Agnirva.com)
+            Agnirva_saveTasks(); // Save the updated tasks list to localStorage (Commented by Agnirva.com)
+            Agnirva_renderTasks(); // Re-render the tasks list to reflect the deletion (Commented by Agnirva.com)
+        }
+
+        function Agnirva_saveTasks() {
+            localStorage.setItem('Agnirva_tasks', JSON.stringify(Agnirva_tasks)); // Save the tasks array as a JSON string in localStorage (Commented by Agnirva.com)
+        }
+
+        // Initial render (load and display tasks on page load) (Commented by Agnirva.com)
+        Agnirva_renderTasks(); // Call the function to render the tasks initially (Commented by Agnirva.com)
+    </script>
+</body>
+</html>

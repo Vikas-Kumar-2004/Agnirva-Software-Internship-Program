@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /> <!-- Sets the character encoding for the document (Commented by Agnirva.com) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Ensures proper scaling on mobile devices (Commented by Agnirva.com) -->
+  <title>Simple Notes App</title> <!-- Title of the webpage shown in the browser tab (Commented by Agnirva.com) -->
+  <style>
+    body {
+      font-family: Arial, sans-serif; /* Sets the font for the body (Commented by Agnirva.com) */
+      max-width: 700px; /* Limits the maximum width of the content (Commented by Agnirva.com) */
+      margin: 30px auto; /* Centers the content with top and bottom margins (Commented by Agnirva.com) */
+      padding: 0 15px; /* Adds horizontal padding to the body (Commented by Agnirva.com) */
+    }
+    h1, h2 {
+      text-align: center; /* Centers the heading text (Commented by Agnirva.com) */
+    }
+    label {
+      display: block; /* Makes labels display as block elements (Commented by Agnirva.com) */
+      margin: 10px 0 5px 0; /* Adds margin around labels (Commented by Agnirva.com) */
+      font-weight: bold; /* Makes label text bold (Commented by Agnirva.com) */
+    }
+    input[type="text"], textarea {
+      width: 100%; /* Sets input and textarea to full width (Commented by Agnirva.com) */
+      padding: 8px; /* Adds padding inside input and textarea (Commented by Agnirva.com) */
+      box-sizing: border-box; /* Includes padding and border in the element's total width and height (Commented by Agnirva.com) */
+    }
+    #Agnirva_notes_list {
+      list-style-type: none; /* Removes default list styling (Commented by Agnirva.com) */
+      padding-left: 0; /* Removes left padding from the list (Commented by Agnirva.com) */
+    }
+    #Agnirva_notes_list li {
+      border: 1px solid #ccc; /* Adds a light gray border to each list item (Commented by Agnirva.com) */
+      padding: 10px; /* Adds padding inside each list item (Commented by Agnirva.com) */
+      margin-bottom: 10px; /* Adds space below each list item (Commented by Agnirva.com) */
+      position: relative; /* Sets position to relative for positioning child elements (Commented by Agnirva.com) */
+    }
+    #Agnirva_notes_list li h3 {
+      margin: 0 0 5px 0; /* Sets margins for the note title (Commented by Agnirva.com) */
+    }
+    #Agnirva_notes_list li p {
+      margin: 5px 0; /* Sets margins for the note content and tags (Commented by Agnirva.com) */
+    }
+    .Agnirva_note_actions {
+      position: absolute; /* Positions the actions container absolutely within the list item (Commented by Agnirva.com) */
+      top: 10px; /* Positions it 10px from the top (Commented by Agnirva.com) */
+      right: 10px; /* Positions it 10px from the right (Commented by Agnirva.com) */
+    }
+    .Agnirva_note_actions button {
+      margin-left: 5px; /* Adds space between action buttons (Commented by Agnirva.com) */
+      padding: 5px 10px; /* Adds padding inside buttons (Commented by Agnirva.com) */
+      font-size: 0.9em; /* Sets a slightly smaller font size for buttons (Commented by Agnirva.com) */
+      cursor: pointer; /* Changes cursor to pointer on hover (Commented by Agnirva.com) */
+      border: none; /* Removes default button border (Commented by Agnirva.com) */
+      border-radius: 3px; /* Rounds the corners of buttons (Commented by Agnirva.com) */
+    }
+    .edit-btn {
+      background-color: #4CAF50; /* Sets green background for edit buttons (Commented by Agnirva.com) */
+      color: #fff; /* Sets white text color for edit buttons (Commented by Agnirva.com) */
+    }
+    .delete-btn {
+      background-color: #f44336; /* Sets red background for delete buttons (Commented by Agnirva.com) */
+      color: #fff; /* Sets white text color for delete buttons (Commented by Agnirva.com) */
+    }
+    .view-btn {
+      background-color: #2196F3; /* Sets blue background for view buttons (Commented by Agnirva.com) */
+      color: #fff; /* Sets white text color for view buttons (Commented by Agnirva.com) */
+      margin-right: 5px; /* Adds space to the right of view buttons (Commented by Agnirva.com) */
+    }
+    #Agnirva_search {
+      margin-bottom: 20px; /* Adds space below the search input (Commented by Agnirva.com) */
+    }
+    button {
+      margin-top: 10px; /* Adds space above buttons (Commented by Agnirva.com) */
+      padding: 10px; /* Adds padding inside buttons (Commented by Agnirva.com) */
+      cursor: pointer; /* Changes cursor to pointer on hover (Commented by Agnirva.com) */
+      border: none; /* Removes default button border (Commented by Agnirva.com) */
+      border-radius: 3px; /* Rounds the corners of buttons (Commented by Agnirva.com) */
+      background-color: #008CBA; /* Sets blue background for general buttons (Commented by Agnirva.com) */
+      color: white; /* Sets white text color for general buttons (Commented by Agnirva.com) */
+      font-size: 1em; /* Sets font size for general buttons (Commented by Agnirva.com) */
+    }
+    #Agnirva_no_notes {
+      text-align: center; /* Centers the "No notes found" message (Commented by Agnirva.com) */
+      color: #666; /* Sets gray color for the message (Commented by Agnirva.com) */
+    }
+    /* Modal Styles */
+    .Agnirva_modal {
+      display: none; /* Hides the modal by default (Commented by Agnirva.com) */
+      position: fixed; /* Fixes the modal position relative to the viewport (Commented by Agnirva.com) */
+      z-index: 1000; /* Ensures the modal appears above other elements (Commented by Agnirva.com) */
+      left: 0; /* Positions modal to the left (Commented by Agnirva.com) */
+      top: 0; /* Positions modal to the top (Commented by Agnirva.com) */
+      width: 100%; /* Sets modal width to full viewport width (Commented by Agnirva.com) */
+      height: 100%; /* Sets modal height to full viewport height (Commented by Agnirva.com) */
+      overflow: auto; /* Enables scrolling if content overflows (Commented by Agnirva.com) */
+      background: rgba(0,0,0,0.5); /* Adds a semi-transparent black background (Commented by Agnirva.com) */
+      justify-content: center; /* Centers modal content horizontally (Commented by Agnirva.com) */
+      align-items: center; /* Centers modal content vertically (Commented by Agnirva.com) */
+    }
+    .Agnirva_modal_content {
+      background: #fff; /* Sets white background for modal content (Commented by Agnirva.com) */
+      padding: 20px; /* Adds padding inside modal content (Commented by Agnirva.com) */
+      border-radius: 5px; /* Rounds the corners of modal content (Commented by Agnirva.com) */
+      width: 90%; /* Sets modal content width to 90% of viewport (Commented by Agnirva.com) */
+      max-width: 500px; /* Limits maximum width of modal content (Commented by Agnirva.com) */
+      position: relative; /* Sets position to relative for positioning child elements (Commented by Agnirva.com) */
+      max-height: 80vh; /* Sets maximum height to 80% of viewport height (Commented by Agnirva.com) */
+      overflow-y: auto;  /* Enables vertical scrolling if content exceeds max height (Commented by Agnirva.com) */
+    }
+    .Agnirva_modal_content h2 {
+      margin-top: 0; /* Removes top margin from modal headings (Commented by Agnirva.com) */
+    }
+    .Agnirva_modal_actions {
+      margin-top: 15px; /* Adds space above modal action buttons (Commented by Agnirva.com) */
+      text-align: right; /* Aligns modal action buttons to the right (Commented by Agnirva.com) */
+    }
+    .Agnirva_modal_actions button {
+      margin-left: 10px; /* Adds space between modal action buttons (Commented by Agnirva.com) */
+    }
+    /* Preserve whitespace and newlines in view-content */
+    #Agnirva_view_content {
+      white-space: pre-wrap; /* Preserves whitespace and wraps text in the view content (Commented by Agnirva.com) */
+    }
+    /* Optional: Improve scrollbar appearance */
+    /* Webkit browsers */
+    .Agnirva_modal_content::-webkit-scrollbar {
+      width: 8px; /* Sets scrollbar width for Webkit browsers (Commented by Agnirva.com) */
+    }
+    .Agnirva_modal_content::-webkit-scrollbar-track {
+      background: #f1f1f1; /* Sets scrollbar track color (Commented by Agnirva.com) */
+      border-radius: 4px; /* Rounds scrollbar track corners (Commented by Agnirva.com) */
+    }
+    .Agnirva_modal_content::-webkit-scrollbar-thumb {
+      background: #888; /* Sets scrollbar thumb color (Commented by Agnirva.com) */
+      border-radius: 4px; /* Rounds scrollbar thumb corners (Commented by Agnirva.com) */
+    }
+    .Agnirva_modal_content::-webkit-scrollbar-thumb:hover {
+      background: #555; /* Changes scrollbar thumb color on hover (Commented by Agnirva.com) */
+    }
+    /* Firefox */
+    .Agnirva_modal_content {
+      scrollbar-width: thin; /* Sets scrollbar width for Firefox (Commented by Agnirva.com) */
+      scrollbar-color: #888 #f1f1f1; /* Sets scrollbar colors for Firefox (Commented by Agnirva.com) */
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple Notes App</h1> <!-- Main heading of the app (Commented by Agnirva.com) -->
+
+  <section>
+    <h2>Add a New Note</h2> <!-- Section heading for adding notes (Commented by Agnirva.com) -->
+    <label for="Agnirva_note_title">Title:</label> <!-- Label for the note title input (Commented by Agnirva.com) -->
+    <input type="text" id="Agnirva_note_title" placeholder="Note title"> <!-- Input field for note title (Commented by Agnirva.com) -->
+    
+    <label for="Agnirva_note_content">Content:</label> <!-- Label for the note content textarea (Commented by Agnirva.com) -->
+    <textarea id="Agnirva_note_content" rows="4" placeholder="Type your note here..."></textarea> <!-- Textarea for note content (Commented by Agnirva.com) -->
+    
+    <label for="Agnirva_note_tags">Tags (comma-separated):</label> <!-- Label for the note tags input (Commented by Agnirva.com) -->
+    <input type="text" id="Agnirva_note_tags" placeholder="e.g. ideas, work, personal"> <!-- Input field for note tags (Commented by Agnirva.com) -->
+  
+    <button id="Agnirva_add_note_btn">Add Note</button> <!-- Button to add a new note (Commented by Agnirva.com) -->
+  </section>
+  
+  <hr> <!-- Horizontal rule to separate sections (Commented by Agnirva.com) -->
+  
+  <section>
+    <h2>Search Notes</h2> <!-- Section heading for searching notes (Commented by Agnirva.com) -->
+    <input type="text" id="Agnirva_search" placeholder="Search by keyword or tag..."> <!-- Input field for searching notes (Commented by Agnirva.com) -->
+  </section>
+  
+  <h2>All Notes</h2> <!-- Heading for the list of all notes (Commented by Agnirva.com) -->
+  <ul id="Agnirva_notes_list"></ul> <!-- Unordered list to display notes (Commented by Agnirva.com) -->
+  <p id="Agnirva_no_notes" style="display:none;">No notes found.</p> <!-- Message displayed when no notes are available (Commented by Agnirva.com) -->
+  
+  <!-- Edit Note Modal -->
+  <div id="Agnirva_edit_modal" class="Agnirva_modal"> <!-- Modal container for editing notes (Commented by Agnirva.com) -->
+    <div class="Agnirva_modal_content"> <!-- Modal content wrapper (Commented by Agnirva.com) -->
+      <h2>Edit Note</h2> <!-- Modal heading for editing (Commented by Agnirva.com) -->
+      <label for="Agnirva_edit_title">Title:</label> <!-- Label for editing note title (Commented by Agnirva.com) -->
+      <input type="text" id="Agnirva_edit_title" placeholder="Note title"> <!-- Input field for editing note title (Commented by Agnirva.com) -->
+      
+      <label for="Agnirva_edit_content">Content:</label> <!-- Label for editing note content (Commented by Agnirva.com) -->
+      <textarea id="Agnirva_edit_content" rows="4" placeholder="Type your note here..."></textarea> <!-- Textarea for editing note content (Commented by Agnirva.com) -->
+      
+      <label for="Agnirva_edit_tags">Tags (comma-separated):</label> <!-- Label for editing note tags (Commented by Agnirva.com) -->
+      <input type="text" id="Agnirva_edit_tags" placeholder="e.g. ideas, work, personal"> <!-- Input field for editing note tags (Commented by Agnirva.com) -->
+    
+      <div class="Agnirva_modal_actions"> <!-- Container for modal action buttons (Commented by Agnirva.com) -->
+        <button id="Agnirva_save_edit_btn">Save Changes</button> <!-- Button to save edited note (Commented by Agnirva.com) -->
+        <button id="Agnirva_cancel_edit_btn" style="background-color: #ccc; color: #000;">Cancel</button> <!-- Button to cancel editing (Commented by Agnirva.com) -->
+      </div>
+    </div>
+  </div>
+  
+  <!-- View Note Modal -->
+  <div id="Agnirva_view_modal" class="Agnirva_modal"> <!-- Modal container for viewing notes (Commented by Agnirva.com) -->
+    <div class="Agnirva_modal_content"> <!-- Modal content wrapper (Commented by Agnirva.com) -->
+      <h2>View Note</h2> <!-- Modal heading for viewing (Commented by Agnirva.com) -->
+      <label>Title:</label> <!-- Label for viewing note title (Commented by Agnirva.com) -->
+      <p id="Agnirva_view_title"></p> <!-- Paragraph to display note title (Commented by Agnirva.com) -->
+      
+      <label>Content:</label> <!-- Label for viewing note content (Commented by Agnirva.com) -->
+      <p id="Agnirva_view_content"></p> <!-- Paragraph to display note content (Commented by Agnirva.com) -->
+      
+      <label>Tags:</label> <!-- Label for viewing note tags (Commented by Agnirva.com) -->
+      <p id="Agnirva_view_tags"></p> <!-- Paragraph to display note tags (Commented by Agnirva.com) -->
+    
+      <div class="Agnirva_modal_actions"> <!-- Container for modal action buttons (Commented by Agnirva.com) -->
+        <button id="Agnirva_close_view_btn" style="background-color: #ccc; color: #000;">Close</button> <!-- Button to close view modal (Commented by Agnirva.com) -->
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const Agnirva_notesList = document.getElementById('Agnirva_notes_list'); // Gets the notes list element (Commented by Agnirva.com)
+    const Agnirva_searchInput = document.getElementById('Agnirva_search'); // Gets the search input element (Commented by Agnirva.com)
+    const Agnirva_titleInput = document.getElementById('Agnirva_note_title'); // Gets the title input element (Commented by Agnirva.com)
+    const Agnirva_contentInput = document.getElementById('Agnirva_note_content'); // Gets the content textarea element (Commented by Agnirva.com)
+    const Agnirva_tagsInput = document.getElementById('Agnirva_note_tags'); // Gets the tags input element (Commented by Agnirva.com)
+    const Agnirva_addNoteBtn = document.getElementById('Agnirva_add_note_btn'); // Gets the add note button element (Commented by Agnirva.com)
+    const Agnirva_noNotesMsg = document.getElementById('Agnirva_no_notes'); // Gets the no notes message element (Commented by Agnirva.com)
+
+    // Edit Modal Elements
+    const Agnirva_editModal = document.getElementById('Agnirva_edit_modal'); // Gets the edit modal element (Commented by Agnirva.com)
+    const Agnirva_editTitleInput = document.getElementById('Agnirva_edit_title'); // Gets the edit title input element (Commented by Agnirva.com)
+    const Agnirva_editContentInput = document.getElementById('Agnirva_edit_content'); // Gets the edit content textarea element (Commented by Agnirva.com)
+    const Agnirva_editTagsInput = document.getElementById('Agnirva_edit_tags'); // Gets the edit tags input element (Commented by Agnirva.com)
+    const Agnirva_saveEditBtn = document.getElementById('Agnirva_save_edit_btn'); // Gets the save edit button element (Commented by Agnirva.com)
+    const Agnirva_cancelEditBtn = document.getElementById('Agnirva_cancel_edit_btn'); // Gets the cancel edit button element (Commented by Agnirva.com)
+
+    // View Modal Elements
+    const Agnirva_viewModal = document.getElementById('Agnirva_view_modal'); // Gets the view modal element (Commented by Agnirva.com)
+    const Agnirva_viewTitle = document.getElementById('Agnirva_view_title'); // Gets the view title paragraph element (Commented by Agnirva.com)
+    const Agnirva_viewContent = document.getElementById('Agnirva_view_content'); // Gets the view content paragraph element (Commented by Agnirva.com)
+    const Agnirva_viewTags = document.getElementById('Agnirva_view_tags'); // Gets the view tags paragraph element (Commented by Agnirva.com)
+    const Agnirva_closeViewBtn = document.getElementById('Agnirva_close_view_btn'); // Gets the close view button element (Commented by Agnirva.com)
+
+    // Retrieve notes from localStorage or initialize empty array
+    let Agnirva_notes = JSON.parse(localStorage.getItem('Agnirva_notes')) || []; // Parses stored notes or initializes an empty array (Commented by Agnirva.com)
+
+    // Variable to keep track of the note being edited
+    let Agnirva_currentEditIndex = null; // Initializes the current edit index (Commented by Agnirva.com)
+
+    // Display notes on page load
+    displayAgnirvaNotes(Agnirva_notes); // Calls function to display notes (Commented by Agnirva.com)
+
+    Agnirva_addNoteBtn.addEventListener('click', () => { // Adds click event listener to add note button (Commented by Agnirva.com)
+      const Agnirva_title = Agnirva_titleInput.value.trim(); // Gets and trims the title input value (Commented by Agnirva.com)
+      const Agnirva_content = Agnirva_contentInput.value.trim(); // Gets and trims the content input value (Commented by Agnirva.com)
+      const Agnirva_tags = Agnirva_tagsInput.value.trim().split(',').map(tag => tag.trim()).filter(Boolean); // Splits, trims, and filters tags input (Commented by Agnirva.com)
+
+      if (!Agnirva_title && !Agnirva_content) { // Checks if both title and content are empty (Commented by Agnirva.com)
+        alert('Please enter at least a title or content for the note.'); // Alerts the user to enter required fields (Commented by Agnirva.com)
+        return; // Exits the function if validation fails (Commented by Agnirva.com)
+      }
+
+      const Agnirva_note = { title: Agnirva_title, content: Agnirva_content, tags: Agnirva_tags }; // Creates a new note object (Commented by Agnirva.com)
+      Agnirva_notes.push(Agnirva_note); // Adds the new note to the notes array (Commented by Agnirva.com)
+      localStorage.setItem('Agnirva_notes', JSON.stringify(Agnirva_notes)); // Saves updated notes array to localStorage (Commented by Agnirva.com)
+      
+      // Clear input fields
+      Agnirva_titleInput.value = ''; // Clears the title input field (Commented by Agnirva.com)
+      Agnirva_contentInput.value = ''; // Clears the content textarea (Commented by Agnirva.com)
+      Agnirva_tagsInput.value = ''; // Clears the tags input field (Commented by Agnirva.com)
+
+      // Refresh the displayed notes
+      displayAgnirvaNotes(Agnirva_notes); // Refreshes the notes display (Commented by Agnirva.com)
+    });
+
+    Agnirva_searchInput.addEventListener('input', () => { // Adds input event listener to search field (Commented by Agnirva.com)
+      const Agnirva_query = Agnirva_searchInput.value.toLowerCase().trim(); // Gets and processes the search query (Commented by Agnirva.com)
+      const Agnirva_filtered = Agnirva_notes.filter(Agnirva_note => { // Filters notes based on search query (Commented by Agnirva.com)
+        const Agnirva_inTitle = Agnirva_note.title.toLowerCase().includes(Agnirva_query); // Checks if query is in title (Commented by Agnirva.com)
+        const Agnirva_inContent = Agnirva_note.content.toLowerCase().includes(Agnirva_query); // Checks if query is in content (Commented by Agnirva.com)
+        const Agnirva_inTags = Agnirva_note.tags.some(tag => tag.toLowerCase().includes(Agnirva_query)); // Checks if query is in any tags (Commented by Agnirva.com)
+        return Agnirva_inTitle || Agnirva_inContent || Agnirva_inTags; // Returns true if query is found (Commented by Agnirva.com)
+      });
+      displayAgnirvaNotes(Agnirva_filtered); // Displays the filtered notes (Commented by Agnirva.com)
+    });
+
+    function displayAgnirvaNotes(Agnirva_notesToDisplay) { // Function to display notes (Commented by Agnirva.com)
+      Agnirva_notesList.innerHTML = ''; // Clears the current notes list (Commented by Agnirva.com)
+      if (Agnirva_notesToDisplay.length === 0) { // Checks if there are no notes to display (Commented by Agnirva.com)
+        Agnirva_noNotesMsg.style.display = 'block'; // Shows the "No notes found" message (Commented by Agnirva.com)
+        return; // Exits the function if no notes (Commented by Agnirva.com)
+      } else {
+        Agnirva_noNotesMsg.style.display = 'none'; // Hides the "No notes found" message (Commented by Agnirva.com)
+      }
+
+      Agnirva_notesToDisplay.forEach((Agnirva_note, Agnirva_index) => { // Iterates over each note to display (Commented by Agnirva.com)
+        const Agnirva_li = document.createElement('li'); // Creates a new list item (Commented by Agnirva.com)
+
+        const Agnirva_titleEl = document.createElement('h3'); // Creates a heading for the note title (Commented by Agnirva.com)
+        Agnirva_titleEl.textContent = Agnirva_note.title || '(No Title)'; // Sets the note title or a placeholder (Commented by Agnirva.com)
+
+        const Agnirva_contentEl = document.createElement('p'); // Creates a paragraph for the note content (Commented by Agnirva.com)
+        // Display a preview (first 100 characters)
+        const Agnirva_preview = Agnirva_note.content.length > 100 ? Agnirva_note.content.substring(0, 100) + '...' : Agnirva_note.content; // Creates a content preview (Commented by Agnirva.com)
+        Agnirva_contentEl.textContent = Agnirva_preview || '(No Content)'; // Sets the content preview or a placeholder (Commented by Agnirva.com)
+
+        const Agnirva_tagsEl = document.createElement('p'); // Creates a paragraph for the note tags (Commented by Agnirva.com)
+        Agnirva_tagsEl.textContent = Agnirva_note.tags.length ? 'Tags: ' + Agnirva_note.tags.join(', ') : 'No Tags'; // Sets the tags text or a placeholder (Commented by Agnirva.com)
+
+        // Action buttons container
+        const Agnirva_actionsDiv = document.createElement('div'); // Creates a container for action buttons (Commented by Agnirva.com)
+        Agnirva_actionsDiv.className = 'Agnirva_note_actions'; // Assigns a class to the actions container (Commented by Agnirva.com)
+
+        // View button
+        const Agnirva_viewBtn = document.createElement('button'); // Creates the view button (Commented by Agnirva.com)
+        Agnirva_viewBtn.textContent = 'View'; // Sets the button text (Commented by Agnirva.com)
+        Agnirva_viewBtn.className = 'view-btn'; // Assigns a class to the view button (Commented by Agnirva.com)
+        Agnirva_viewBtn.addEventListener('click', () => Agnirva_openViewModal(Agnirva_index)); // Adds click event to open view modal (Commented by Agnirva.com)
+
+        // Edit button
+        const Agnirva_editBtn = document.createElement('button'); // Creates the edit button (Commented by Agnirva.com)
+        Agnirva_editBtn.textContent = 'Edit'; // Sets the button text (Commented by Agnirva.com)
+        Agnirva_editBtn.className = 'edit-btn'; // Assigns a class to the edit button (Commented by Agnirva.com)
+        Agnirva_editBtn.addEventListener('click', () => Agnirva_openEditModal(Agnirva_index)); // Adds click event to open edit modal (Commented by Agnirva.com)
+
+        // Delete button
+        const Agnirva_deleteBtn = document.createElement('button'); // Creates the delete button (Commented by Agnirva.com)
+        Agnirva_deleteBtn.textContent = 'Delete'; // Sets the button text (Commented by Agnirva.com)
+        Agnirva_deleteBtn.className = 'delete-btn'; // Assigns a class to the delete button (Commented by Agnirva.com)
+        Agnirva_deleteBtn.addEventListener('click', () => Agnirva_deleteNote(Agnirva_index)); // Adds click event to delete note (Commented by Agnirva.com)
+
+        Agnirva_actionsDiv.appendChild(Agnirva_viewBtn); // Adds the view button to actions container (Commented by Agnirva.com)
+        Agnirva_actionsDiv.appendChild(Agnirva_editBtn); // Adds the edit button to actions container (Commented by Agnirva.com)
+        Agnirva_actionsDiv.appendChild(Agnirva_deleteBtn); // Adds the delete button to actions container (Commented by Agnirva.com)
+
+        Agnirva_li.appendChild(Agnirva_titleEl); // Adds the title to the list item (Commented by Agnirva.com)
+        Agnirva_li.appendChild(Agnirva_contentEl); // Adds the content preview to the list item (Commented by Agnirva.com)
+        Agnirva_li.appendChild(Agnirva_tagsEl); // Adds the tags to the list item (Commented by Agnirva.com)
+        Agnirva_li.appendChild(Agnirva_actionsDiv); // Adds the actions container to the list item (Commented by Agnirva.com)
+
+        Agnirva_notesList.appendChild(Agnirva_li); // Adds the list item to the notes list (Commented by Agnirva.com)
+      });
+    }
+
+    function Agnirva_deleteNote(Agnirva_index) { // Function to delete a note (Commented by Agnirva.com)
+      if (confirm('Are you sure you want to delete this note?')) { // Asks for confirmation before deleting (Commented by Agnirva.com)
+        Agnirva_notes.splice(Agnirva_index, 1); // Removes the note from the array (Commented by Agnirva.com)
+        localStorage.setItem('Agnirva_notes', JSON.stringify(Agnirva_notes)); // Updates localStorage with the new notes array (Commented by Agnirva.com)
+        displayAgnirvaNotes(Agnirva_notes); // Refreshes the notes display (Commented by Agnirva.com)
+      }
+    }
+
+    // Edit Modal Functions
+    function Agnirva_openEditModal(Agnirva_index) { // Function to open the edit modal (Commented by Agnirva.com)
+      Agnirva_currentEditIndex = Agnirva_index; // Sets the current edit index (Commented by Agnirva.com)
+      const Agnirva_note = Agnirva_notes[Agnirva_index]; // Gets the note to be edited (Commented by Agnirva.com)
+      Agnirva_editTitleInput.value = Agnirva_note.title; // Populates the edit title input with the note's title (Commented by Agnirva.com)
+      Agnirva_editContentInput.value = Agnirva_note.content; // Populates the edit content textarea with the note's content (Commented by Agnirva.com)
+      Agnirva_editTagsInput.value = Agnirva_note.tags.join(', '); // Populates the edit tags input with the note's tags (Commented by Agnirva.com)
+      Agnirva_editModal.style.display = 'flex'; // Displays the edit modal (Commented by Agnirva.com)
+    }
+
+    Agnirva_saveEditBtn.addEventListener('click', () => { // Adds click event listener to save edit button (Commented by Agnirva.com)
+      const Agnirva_title = Agnirva_editTitleInput.value.trim(); // Gets and trims the edited title (Commented by Agnirva.com)
+      const Agnirva_content = Agnirva_editContentInput.value.trim(); // Gets and trims the edited content (Commented by Agnirva.com)
+      const Agnirva_tags = Agnirva_editTagsInput.value.trim().split(',').map(tag => tag.trim()).filter(Boolean); // Splits, trims, and filters edited tags (Commented by Agnirva.com)
+
+      if (!Agnirva_title && !Agnirva_content) { // Checks if both edited title and content are empty (Commented by Agnirva.com)
+        alert('Please enter at least a title or content for the note.'); // Alerts the user to enter required fields (Commented by Agnirva.com)
+        return; // Exits the function if validation fails (Commented by Agnirva.com)
+      }
+
+      // Update the note
+      Agnirva_notes[Agnirva_currentEditIndex] = { title: Agnirva_title, content: Agnirva_content, tags: Agnirva_tags }; // Updates the note in the array (Commented by Agnirva.com)
+      localStorage.setItem('Agnirva_notes', JSON.stringify(Agnirva_notes)); // Saves the updated notes array to localStorage (Commented by Agnirva.com)
+      
+      // Close the modal
+      Agnirva_editModal.style.display = 'none'; // Hides the edit modal (Commented by Agnirva.com)
+      Agnirva_currentEditIndex = null; // Resets the current edit index (Commented by Agnirva.com)
+
+      // Refresh the displayed notes
+      displayAgnirvaNotes(Agnirva_notes); // Refreshes the notes display (Commented by Agnirva.com)
+    });
+
+    Agnirva_cancelEditBtn.addEventListener('click', () => { // Adds click event listener to cancel edit button (Commented by Agnirva.com)
+      Agnirva_editModal.style.display = 'none'; // Hides the edit modal (Commented by Agnirva.com)
+      Agnirva_currentEditIndex = null; // Resets the current edit index (Commented by Agnirva.com)
+    });
+
+    // Close edit modal when clicking outside of the modal content
+    window.addEventListener('click', (e) => { // Adds click event listener to the window (Commented by Agnirva.com)
+      if (e.target === Agnirva_editModal) { // Checks if the click is outside the modal content (Commented by Agnirva.com)
+        Agnirva_editModal.style.display = 'none'; // Hides the edit modal (Commented by Agnirva.com)
+        Agnirva_currentEditIndex = null; // Resets the current edit index (Commented by Agnirva.com)
+      }
+    });
+
+    // View Modal Functions
+    function Agnirva_openViewModal(Agnirva_index) { // Function to open the view modal (Commented by Agnirva.com)
+      const Agnirva_note = Agnirva_notes[Agnirva_index]; // Gets the note to be viewed (Commented by Agnirva.com)
+      Agnirva_viewTitle.textContent = Agnirva_note.title || '(No Title)'; // Sets the view title (Commented by Agnirva.com)
+      Agnirva_viewContent.textContent = Agnirva_note.content || '(No Content)'; // Sets the view content (Commented by Agnirva.com)
+      Agnirva_viewTags.textContent = Agnirva_note.tags.length ? 'Tags: ' + Agnirva_note.tags.join(', ') : 'No Tags'; // Sets the view tags (Commented by Agnirva.com)
+      Agnirva_viewModal.style.display = 'flex'; // Displays the view modal (Commented by Agnirva.com)
+    }
+
+    Agnirva_closeViewBtn.addEventListener('click', () => { // Adds click event listener to close view button (Commented by Agnirva.com)
+      Agnirva_viewModal.style.display = 'none'; // Hides the view modal (Commented by Agnirva.com)
+    });
+
+    // Close view modal when clicking outside of the modal content
+    window.addEventListener('click', (e) => { // Adds click event listener to the window (Commented by Agnirva.com)
+      if (e.target === Agnirva_viewModal) { // Checks if the click is outside the modal content (Commented by Agnirva.com)
+        Agnirva_viewModal.style.display = 'none'; // Hides the view modal (Commented by Agnirva.com)
+      }
+    });
+  </script>
+  
+</body>
+</html>

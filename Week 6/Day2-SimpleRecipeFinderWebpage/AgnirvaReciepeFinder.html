@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ensures proper scaling on mobile devices (Commented by Agnirva.com) -->
+    <title>Simple Recipe Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Uses system default sans-serif font if Arial is unavailable (Commented by Agnirva.com) */
+            background-color: #f2f2f2; /* Light gray background for better contrast (Commented by Agnirva.com) */
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333; /* Dark gray color for better readability (Commented by Agnirva.com) */
+        }
+        #Agnirva_search-container {
+            margin-bottom: 20px; /* Adds spacing between search box and results (Commented by Agnirva.com) */
+        }
+        #Agnirva_ingredient-input {
+            padding: 10px;
+            width: 60%; /* Makes input responsive while maintaining readability (Commented by Agnirva.com) */
+            max-width: 300px; /* Prevents input from becoming too wide on large screens (Commented by Agnirva.com) */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #Agnirva_search-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #28a745; /* Bootstrap-style green color (Commented by Agnirva.com) */
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #Agnirva_search-button:hover {
+            background-color: #218838; /* Darker green on hover for better UX (Commented by Agnirva.com) */
+        }
+        #Agnirva_recipes {
+            display: flex;
+            flex-wrap: wrap; /* Allows recipe cards to wrap on smaller screens (Commented by Agnirva.com) */
+            justify-content: center;
+        }
+        .Agnirva_recipe {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px;
+            width: 200px; /* Fixed width for consistent card sizing (Commented by Agnirva.com) */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth (Commented by Agnirva.com) */
+            transition: transform 0.2s; /* Smooth animation for hover effect (Commented by Agnirva.com) */
+        }
+        .Agnirva_recipe:hover {
+            transform: scale(1.05); /* Slight zoom effect on hover (Commented by Agnirva.com) */
+        }
+        .Agnirva_recipe img {
+            width: 100%;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px; /* Matches parent container's border radius (Commented by Agnirva.com) */
+        }
+        .Agnirva_recipe-name {
+            padding: 10px;
+            font-weight: bold;
+            color: #555; /* Medium gray for recipe names (Commented by Agnirva.com) */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Simple Recipe Finder</h1>
+
+    <div id="Agnirva_search-container">
+        <input type="text" id="Agnirva_ingredient-input" placeholder="Enter an ingredient (e.g., chicken)">
+        <button id="Agnirva_search-button">Search</button>
+    </div>
+
+    <div id="Agnirva_recipes"></div>
+
+    <script>
+        const Agnirva_searchButton = document.getElementById('Agnirva_search-button');
+        const Agnirva_ingredientInput = document.getElementById('Agnirva_ingredient-input');
+        const Agnirva_recipesDiv = document.getElementById('Agnirva_recipes');
+
+        Agnirva_searchButton.addEventListener('click', () => { /* Sets up click handler for search button (Commented by Agnirva.com) */
+            const Agnirva_ingredient = Agnirva_ingredientInput.value.trim(); /* Removes whitespace from input (Commented by Agnirva.com) */
+            if (Agnirva_ingredient === '') {
+                alert('Please enter an ingredient.');
+                return;
+            }
+            fetchRecipes(Agnirva_ingredient);
+        });
+
+        async function fetchRecipes(Agnirva_ingredient) { /* Async function to fetch recipes from API (Commented by Agnirva.com) */
+            Agnirva_recipesDiv.innerHTML = '<p>Loading recipes...</p>'; /* Shows loading message while fetching (Commented by Agnirva.com) */
+            try {
+                const Agnirva_response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${Agnirva_ingredient}`); /* Uses TheMealDB API (Commented by Agnirva.com) */
+                const Agnirva_data = await Agnirva_response.json();
+                displayRecipes(Agnirva_data.meals);
+            } catch (Agnirva_error) {
+                console.error('Error fetching recipes:', Agnirva_error);
+                Agnirva_recipesDiv.innerHTML = '<p>Sorry, something went wrong. Please try again later.</p>';
+            }
+        }
+
+        function displayRecipes(Agnirva_meals) { /* Function to render recipe cards (Commented by Agnirva.com) */
+            if (!Agnirva_meals) {
+                Agnirva_recipesDiv.innerHTML = '<p>No recipes found. Try a different ingredient.</p>';
+                return;
+            }
+            Agnirva_recipesDiv.innerHTML = '';
+            Agnirva_meals.forEach(Agnirva_meal => { /* Iterates through each meal to create recipe cards (Commented by Agnirva.com) */
+                const Agnirva_recipeDiv = document.createElement('div');
+                Agnirva_recipeDiv.className = 'Agnirva_recipe';
+
+                const Agnirva_mealImg = document.createElement('img');
+                Agnirva_mealImg.src = Agnirva_meal.strMealThumb; /* Gets recipe image from API response (Commented by Agnirva.com) */
+                Agnirva_mealImg.alt = Agnirva_meal.strMeal;
+
+                const Agnirva_mealName = document.createElement('div');
+                Agnirva_mealName.className = 'Agnirva_recipe-name';
+                Agnirva_mealName.textContent = Agnirva_meal.strMeal; /* Sets recipe name from API response (Commented by Agnirva.com) */
+
+                Agnirva_recipeDiv.appendChild(Agnirva_mealImg);
+                Agnirva_recipeDiv.appendChild(Agnirva_mealName);
+
+                Agnirva_recipesDiv.appendChild(Agnirva_recipeDiv);
+            });
+        }
+
+        // Allow pressing Enter to trigger search
+        Agnirva_ingredientInput.addEventListener('keypress', function (e) { /* Adds keyboard support for better UX (Commented by Agnirva.com) */
+            if (e.key === 'Enter') {
+                Agnirva_searchButton.click();
+            }
+        });
+    </script>
+
+</body>
+</html>
